@@ -1,21 +1,13 @@
 import React from 'react';
-import {View, Text, Button, StyleSheet, StatusBar} from 'react-native';
-import MusicPlayer from './component/MusicPlayer';
+import Dashboard from './screens/Dashboard';
+import Login from './screens/Login';
 
 const App = () => {
     return (
-      <View style={styles.container}>
-        <StatusBar barStyle='light-content' />
-        <MusicPlayer />
-      </View>
+      // <Dashboard />
+      <Login />
     );
 };
 
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
