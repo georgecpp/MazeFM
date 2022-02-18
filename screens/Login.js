@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity} from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity, Alert} from "react-native";
 import GlobalStyles from "../styles/GlobalStyles";
 import { Platform } from "react-native";
 import SocialMediaButton from "../components/SocialMediaButton";
 import { windowWidth, windowHeight } from "../utils/Dimensions";
 import { loginValidation } from "../utils/Validation";
 import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+import axios from "axios";
 
+
+const baseUrl = 'https://mazefm-backend.herokuapp.com';
 
 
 export default function Login() {
@@ -39,14 +42,23 @@ export default function Login() {
                                           const data = await AccessToken.getCurrentAccessToken();
                                           if(!data) {
                                               console.log("Something went wrong obtaining access token");
-                                          }
-                                          else{
-                                              console.log(data);
-                                          }
-
-                                          // now create a MongoDb credential with the AccessToken
-
-                                          // Sign-in user with the credential.
+                                              return; 
+                                            }                       
+                                        const userFb = await axios.get(`https://graph.facebook.com/${data.userID}?fields=id,name,email,picture&access_token=${data.accessToken}`);
+                                        
+                                        const {name, email, picture} = userFb.data;
+                                        const img = picture.data.url;
+                                        const loginResponse = await axios.post(`${baseUrl}/auth/facebook-auth`, 
+                                        {
+                                            name,
+                                            email,
+                                            img
+                                        });
+                                        if(loginResponse.status === 200 || loginResponse.status === 201) {
+                                            // user registered with facebook.
+                                            // received jwt in header and user id.
+                                            Alert.alert("Maze.fm Auth", "Signed in Successfully with Facebook! Enjoy!");
+                                        }
                                     }
                                 },
                                 function(error) {
