@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "85760580626",
+    "project_id": "mazefm-firebase",
+    "storage_bucket": "mazefm-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85760580626:android:bd8aab2511d2c59e198ccb",
+        "android_client_info": {
+          "package_name": "com.mazefm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85760580626-ifpn6b7rja63tde2vlnfjo24pi6kkn3d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mazefm",
+            "certificate_hash": "59693328834908830cef7f0dbe39d22c3382245c"
+          }
+        },
+        {
+          "client_id": "85760580626-vthb3f69o3lhvbdk9h78msgv31vo16kn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWnqz0av0CnR7iUVcDQjv8KR3hi_8iyAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85760580626-vthb3f69o3lhvbdk9h78msgv31vo16kn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

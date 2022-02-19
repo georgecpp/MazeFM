@@ -7,13 +7,23 @@ import { windowWidth, windowHeight } from "../utils/Dimensions";
 import { loginValidation } from "../utils/Validation";
 import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import axios from "axios";
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+  } from '@react-native-google-signin/google-signin';
 
 
 const baseUrl = 'https://mazefm-backend.herokuapp.com';
 
 
 export default function Login() {
-
+    
+    GoogleSignin.configure({
+        webClientId: '85760580626-vthb3f69o3lhvbdk9h78msgv31vo16kn.apps.googleusercontent.com',
+        offlineAccess: true,
+        hostedDomain: '',
+    })
     return (
         <>
         {/* handle Platform if Android or iOS */}
@@ -48,7 +58,7 @@ export default function Login() {
                                         
                                         const {name, email, picture} = userFb.data;
                                         const img = picture.data.url;
-                                        const loginResponse = await axios.post(`${baseUrl}/auth/facebook-auth`, 
+                                        const loginResponse = await axios.post(`${baseUrl}/auth/social-auth`, 
                                         {
                                             name,
                                             email,
@@ -67,7 +77,7 @@ export default function Login() {
                             );
                         }} 
                         />
-                        {/* <SocialMediaButton 
+                        <SocialMediaButton 
                         buttonTitle="Google"
                         btnType="google"
                         color="black"
@@ -75,29 +85,34 @@ export default function Login() {
                         source={require("../assets/icons/search.png")}
                         marginLeftIcon={5}
                         onPress={async () => {
-                            try {   
-
-                                // Get the users ID token
-                                const {idToken} = await GoogleSignin.signIn();
-                                console.log(idToken);
-
-                                // Create a Google credential with the token
-
-                                // Sign-in the user with the credential
-                            }
-                            catch(error) {
+                            try {
+                                await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+                                const userInfo = await GoogleSignin.signIn();
+                                const {name, email, photo} = userInfo.user;
+                                const loginResponse = await axios.post(`${baseUrl}/auth/social-auth`, 
+                                {
+                                    name: name,
+                                    email: email,
+                                    img: photo
+                                });
+                                if(loginResponse.status === 200 || loginResponse.status === 201) {
+                                    // user registered with google.
+                                    // received jwt in header and user id.
+                                    Alert.alert("Maze.fm Auth", "Signed in Successfully with Google! Enjoy!");
+                                }
+                              } catch (error) {
                                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-                                    // user cancelled the login flow
-                                  } else if (error.code === statusCodes.IN_PROGRESS) {
-                                    // operation (e.g. sign in) is in progress already
-                                  } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-                                    // play services not available or outdated
-                                  } else {
-                                    // some other error happened
-                                  }
-                            }  
-                        }} // implement Google Sign In - AuthContext
-                        /> */}
+                                    Alert.alert('User Cancelled the Login Flow');
+                                } else if (error.code === statusCodes.IN_PROGRESS) {
+                                    Alert.alert('Signing In');
+                                } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                                    Alert.alert('Play Services Not Available or Outdated');
+                                } else {
+                                    Alert.alert(error.message);
+                                }
+                              }
+                        }}
+                        />
                         
                     </View>
             </SafeAreaView>
