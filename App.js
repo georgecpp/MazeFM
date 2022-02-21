@@ -1,14 +1,13 @@
 import React from 'react';
 import { View,StyleSheet } from 'react-native';
 import Dashboard from './screens/Dashboard';
+import Login from './screens/Login';
 import Register from './screens/Register';
 
 const App = () => {
     return (
       // <Dashboard />
-      <View style={styles.container}>
-         <Register/>
-      </View>
+      <Login />
     );
 };
 

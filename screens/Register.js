@@ -7,12 +7,13 @@ import {
 import React, { useState } from 'react'
 import { registerValidation } from '../utils/Validation';
 
-const [name,setName] = useState();
-const [email, setEmail] = useState();
-const [password, setPassword] = useState();
-const [confirmPassword,setConfirmPassword]=useState();
+
 
 export default function Register() {
+  const [name,setName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword,setConfirmPassword]=useState();
   return (
     <View style={styles.regform}>
         <Text style={styles.header}>Registration</Text>
