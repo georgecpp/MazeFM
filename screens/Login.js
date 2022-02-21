@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity, Alert, Dimensions} from "react-native";
+import { View, ImageBackground, Text, Platform, SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity, Alert, Dimensions} from "react-native";
 import GlobalStyles from "../styles/GlobalStyles";
-import { Platform } from "react-native";
 import SocialMediaButton from "../components/SocialMediaButton";
 import { windowWidth, windowHeight } from "../utils/Dimensions";
 import { loginValidation } from "../utils/Validation";
@@ -16,7 +15,6 @@ import {
 import bgImage from '../assets/images/loginBackground.jpg'
 import logoIcon from '../assets/icons/rnlogo.png'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { TouchableOpacity } from 'react-native'
 
 const baseUrl = 'https://mazefm-backend.herokuapp.com';
 const { width: WIDTH } = Dimensions.get('window')
@@ -27,7 +25,7 @@ export default function Login() {
         webClientId: '85760580626-vthb3f69o3lhvbdk9h78msgv31vo16kn.apps.googleusercontent.com',
         offlineAccess: true,
         hostedDomain: '',
-    })
+    });
     
     [press, setPress] = useState(false);
     [showPass, setShowPass] = useState(true);
