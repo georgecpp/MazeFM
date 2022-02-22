@@ -1,24 +1,13 @@
 import React from 'react';
-import { View,StyleSheet } from 'react-native';
-import Dashboard from './screens/Dashboard';
-import Login from './screens/Login';
-import Register from './screens/Register';
+import { View,StyleSheet, LogBox } from 'react-native';
+import AuthNavigation from './navigation/AuthNavigation';
 
 const App = () => {
-    return (
-      // <Dashboard />
-      <Register />
-    );
+    LogBox.ignoreLogs([
+      "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
+    ]);
+    return <AuthNavigation />;
 };
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#36485f',
-      justifyContent: 'center',
-      paddingLeft:60,
-      paddingRight:60, 
-    },
-});
 
 export default App;

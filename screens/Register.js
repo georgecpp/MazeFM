@@ -10,7 +10,7 @@ import { TouchableOpacity } from 'react-native'
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function RegisterN() {
+export default function Register() {
 
     [press, setPress] = useState(false);
     [showPass, setShowPass] = useState(true);

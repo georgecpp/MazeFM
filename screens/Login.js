@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const baseUrl = 'https://mazefm-backend.herokuapp.com';
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function Login() {
+export default function Login({navigation}) {
     
     GoogleSignin.configure({
         webClientId: '85760580626-vthb3f69o3lhvbdk9h78msgv31vo16kn.apps.googleusercontent.com',
@@ -166,6 +166,19 @@ export default function Login() {
                             }}
                             />
                         </View>
+                        <TouchableOpacity
+                        style={styles.signupNav}
+                        onPress={() => {navigation.navigate('Register')}} // implement navigation to Register Screen
+                        > 
+                            <View style={{flexDirection:"row"}}>
+                                <Text style={styles.navButtonText}>
+                                    Don't have an account?
+                                </Text>
+                                <Text style={[styles.navButtonText, {color:"#5865F2", marginLeft:10}]}>
+                                Sign Up
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
                     </ImageBackground>
             </SafeAreaView>
             ) : null}
@@ -238,5 +251,10 @@ export const styles = StyleSheet.create({
       color: 'rgba(255, 255, 255, 0.7)',
       fontSize: 16,
       textAlign: 'center',
+    },
+    signupNav: {
+      flex:1,
+      justifyContent:"flex-end",
+      marginBottom:25
     }
 })
