@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { BackgroundImage } from 'react-native-elements/dist/config'
 
@@ -7,8 +7,12 @@ import logoIcon from '../assets/icons/rnlogo.png'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { TextInput } from 'react-native'
 import { TouchableOpacity } from 'react-native'
+import { registerValidation } from '../utils/Validation'
+import axios from 'axios'
 
 const { width: WIDTH } = Dimensions.get('window')
+
+const baseUrl = 'https://mazefm-backend.herokuapp.com';
 
 export default function Register() {
 
@@ -37,6 +41,10 @@ export default function Register() {
         setShowCpass(true);
       }
     };
+   const [email,setEmail]=useState();
+   const [password,setPassword]=useState();
+   const [confirmPassword,setConfirmPassword]=useState();
+   const [name,setName]=useState();
 
   return (
     <BackgroundImage source={bgImage} style={styles.backgroundContainer}>
@@ -51,6 +59,7 @@ export default function Register() {
             <TextInput 
                 style={styles.input} 
                 placeholder={'Your Name'}
+                onChangeText={(inputName) => setName(inputName)}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'/>
         </View>
@@ -61,6 +70,7 @@ export default function Register() {
             <TextInput 
                 style={styles.input} 
                 placeholder={'Email'}
+                onChangeText={(inputEmail) => setEmail(inputEmail)}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'/>
         </View>
@@ -72,6 +82,7 @@ export default function Register() {
                 style={styles.input}
                 placeholder={'Password'}
                 secureTextEntry={showPass}
+                onChangeText={(inputPassword) => setPassword(inputPassword)}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'/>
             <TouchableOpacity style={styles.btnEye}
@@ -87,17 +98,39 @@ export default function Register() {
                 style={styles.input}
                 placeholder={'Confirm Password'}
                 secureTextEntry={showCpass}
+                onChangeText={(inputConfirmPassword) => setConfirmPassword(inputConfirmPassword)}
                 placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                 underlineColorAndroid='transparent'/>
             <TouchableOpacity style={styles.btnEye}
                 onPress={() => showCpasswd()}>
-                {/* <Icon name={press == false ? 'ios-eye-outline' : 'ios-eye-off-outline'} size={26} color={'rgba(255,255,255, 0.7)'}/> */}
 
                 <Icon name={cPress == false ? 'ios-eye-outline' : 'ios-eye-off-outline'} size={26} color={'rgba(255,255,255, 0.7)'}/>
             </TouchableOpacity>
         </View>
         
-        <TouchableOpacity style={styles.btnSignUp}>
+        <TouchableOpacity style={styles.btnSignUp}
+         onPress={async() => {
+             try {
+                const {error} = registerValidation({name, email, password, confirmPassword});
+                if(error) {
+                   console.log(error.details[0].message);
+                   return;
+                }
+                const registerResponse = await axios.post(`${baseUrl}/auth/register`, 
+                {
+                    name: name,
+                    password: password,
+                    email: email
+                });
+                if(registerResponse.status === 201)
+                {
+                    Alert.alert("Maze.fm Auth", "Signed up successfully!");
+                }
+             }
+             catch(error) {
+                Alert.alert(error.message);
+             }
+         }}> 
             <Text style={styles.text}>Sign Up</Text>
         </TouchableOpacity>
 

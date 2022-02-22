@@ -9,6 +9,7 @@ const loginValidation = (data) => {
 };
 const registerValidation=(data)=>{
     const schema=Joi.object({
+        name: Joi.string().required(),
         email: Joi.string().required().email(), 
         password:Joi.string().required().regex(/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/),
         confirmPassword:Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'must match password' } } })

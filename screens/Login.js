@@ -40,6 +40,9 @@ export default function Login({navigation}) {
       }
     }
     
+   const [email,setEmail]=useState();
+   const [password,setPassword]=useState();
+
     return (
         <>
         {/* handle Platform if Android or iOS */}
@@ -56,7 +59,8 @@ export default function Login({navigation}) {
                             style={styles.inputIcon}/>
                           <TextInput 
                             style={styles.input}
-                            placeholder={'Username'}
+                            placeholder={'Email'}
+                            onChangeText={(inputEmail) => setEmail(inputEmail)}
                             placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                             underlineColorAndroid='transparent'/>
                         </View>
@@ -68,6 +72,7 @@ export default function Login({navigation}) {
                             style={styles.input}
                             placeholder={'Password'}
                             secureTextEntry={showPass}
+                            onChangeText={(inputPassword) => setPassword(inputPassword)}
                             placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
                             underlineColorAndroid='transparent'/>
 
@@ -78,7 +83,29 @@ export default function Login({navigation}) {
 
                         </View>
 
-                        <TouchableOpacity style={styles.btnLogin}>
+                        <TouchableOpacity style={styles.btnLogin} 
+                        onPress={async() => {
+                          try{
+                            const {error} = loginValidation({email,password})
+                            if(error)
+                            {
+                              console.log(error.details[0].message);
+                              return;
+                            }
+                            const loginResponse = await axios.post(`${baseUrl}/auth/login`,
+                            {
+                              email: email,
+                              password: password
+                            });
+                            if(loginResponse.status === 200)
+                              {
+                                Alert.alert("Maze.fm Auth", "Login succesful");
+                              }
+                            }
+                            catch(error){
+                              Alert.alert(error.message);
+                            }
+                        }}>
                             <Text style={styles.text}>Login</Text>
                           </TouchableOpacity>
 
