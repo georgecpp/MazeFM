@@ -3,12 +3,11 @@ import { View,StyleSheet } from 'react-native';
 import Dashboard from './screens/Dashboard';
 import Login from './screens/Login';
 import Register from './screens/Register';
-import RegisterN from './screens/RegisterN';
 
 const App = () => {
     return (
       // <Dashboard />
-      <Login />
+      <Register />
     );
 };
 
