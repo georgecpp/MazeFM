@@ -173,7 +173,7 @@ export default function Login() {
     );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     containerSafeAreaAndroid: {
         paddingTop: 25,
         backgroundColor:"#23272A", 
@@ -193,8 +193,8 @@ const styles = StyleSheet.create({
       marginBottom: 50
     },
     logo : {
-      width: 100,
-      height: 100
+      width: 120,
+      height: 120
     },
     logoText: {
       color: 'white',
@@ -220,7 +220,6 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
       marginTop: 10,
-
     },
     btnEye: {
       position: 'absolute',

@@ -7,7 +7,7 @@ import Register from './screens/Register';
 const App = () => {
     return (
       // <Dashboard />
-      <Login />
+      <Register />
     );
 };
 
