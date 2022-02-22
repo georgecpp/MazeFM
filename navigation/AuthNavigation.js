@@ -6,7 +6,7 @@ import Register from '../screens/Register';
 import Dashboard from '../screens/Dashboard';
 
 
-export default function RootNavigation() {
+export default function AuthNavigation() {
     const Stack = createStackNavigator();
 
     const screenOptions = {
