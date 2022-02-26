@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View,StyleSheet, LogBox, Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,6 +23,14 @@ const baseUrl = 'https://mazefm-backend.herokuapp.com';
 export const AuthContext = React.createContext();
 
 export default App = ({navigation}) => {
+
+    var user = {
+      id: null,
+      jwt: null,
+      email: null,
+      name: null,
+      img: null
+    };
 
     GoogleSignin.configure({
       webClientId: '85760580626-vthb3f69o3lhvbdk9h78msgv31vo16kn.apps.googleusercontent.com',
@@ -73,15 +81,21 @@ export default App = ({navigation}) => {
         let userToken;
 
         try {
-          userToken = await AsyncStorage.getItem('userToken');
+          await AsyncStorage.getItem('user', (err, value) => {
+            if(err) {
+              console.log(err);
+            }
+            else {
+              user = JSON.parse(value);
+              if(user) {
+                userToken = user.jwt;
+              }
+            }
+          });
+          
         } catch (e) {
-          // Restoring token failed
+          console.log(e);
         }
-
-        // After restoring token, we may need to validate it in production apps
-
-        // This will switch to the App screen or Auth screen and this loading
-        // screen will be unmounted and thrown away.
         dispatch({ type: 'RESTORE_TOKEN', token: userToken });
       };
 
@@ -120,8 +134,11 @@ export default App = ({navigation}) => {
                             img
                         });
                         if(loginResponse.status === 200 || loginResponse.status === 201) {
-                            // user registered with facebook.
-                            // received jwt in header and user id.
+                          // user registered with facebook.
+                          // received jwt in header and user id.
+                          user = loginResponse.data;
+                          dispatch({ type: 'SIGN_IN', token: user.jwt });
+                          await AsyncStorage.setItem('user', JSON.stringify(user));
                         }
                     }
                 },
@@ -142,8 +159,9 @@ export default App = ({navigation}) => {
                     img: photo
                 });
                 if(loginResponse.status === 200 || loginResponse.status === 201) {
-                    // user registered with google.
-                    // received jwt in header and user id.
+                    user = loginResponse.data;
+                    dispatch({ type: 'SIGN_IN', token: user.jwt });
+                    await AsyncStorage.setItem('user', JSON.stringify(user));
                   }
               } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -174,14 +192,15 @@ export default App = ({navigation}) => {
               });
               if(loginResponse.status === 200)
                 {
-                  
+                  user = loginResponse.data;
+                  dispatch({ type: 'SIGN_IN', token: user.jwt });
+                  await AsyncStorage.setItem('user', JSON.stringify(user));
                 }
               }
               catch(error){
                 Alert.alert(error.message);
               }
           }
-          dispatch({ type: 'SIGN_IN', token: 'dummy-auth-token' });
         },
         signOut: () => dispatch({ type: 'SIGN_OUT' }),
         signUp: async authData => {
@@ -199,7 +218,7 @@ export default App = ({navigation}) => {
     return (
       <AuthContext.Provider value={authContext}>
           <NavigationContainer>
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={{headerShown:false}}>
                 {state.userToken == null ? (
                     <>
                         <Stack.Screen name="Login" component={Login} />

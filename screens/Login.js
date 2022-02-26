@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, ImageBackground, Text, Platform, SafeAreaView, StyleSheet, Image, TextInput, TouchableOpacity, Dimensions} from "react-native";
 import SocialMediaButton from "../components/SocialMediaButton";
 import bgImage from '../assets/images/loginBackground.jpg'
@@ -25,7 +25,7 @@ export default function Login({navigation}) {
     
    const [email,setEmail]=useState();
    const [password,setPassword]=useState();
-   const [signInType, setSignInType]=useState();
+   var signInType;
 
    const {signIn} = React.useContext(AuthContext);
 
@@ -70,7 +70,7 @@ export default function Login({navigation}) {
                         </View>
 
                         <TouchableOpacity style={styles.btnLogin} onPress={() => {
-                          setSignInType('normal');
+                          signInType = 'normal';
                           signIn({signInType, email, password})
                         }}>
                             <Text style={styles.text}>Login</Text>
@@ -83,7 +83,7 @@ export default function Login({navigation}) {
                             color="white"
                             backgroundColors={["#4c669f", "#3b5998", "#192f6a"]}
                             onPress={() => {
-                              setSignInType('facebook');
+                              signInType = 'facebook';
                               signIn({signInType});
                             }} 
                             />
@@ -95,7 +95,7 @@ export default function Login({navigation}) {
                             source={require("../assets/icons/search.png")}
                             marginLeftIcon={5}
                             onPress={() => {
-                              setSignInType('google');
+                              signInType = 'google';
                               signIn({signInType});
                             }}
                             />
