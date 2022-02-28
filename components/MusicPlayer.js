@@ -49,23 +49,27 @@ const MusicPlayer = () => {
     const [myArtist, setMyArtist] = useState("Artist");
     const [myTitle, setMyTitle] = useState("Title");
 
-    TrackPlayer.addEventListener('playback-metadata-received', async e => {
-        const currentTrack = await TrackPlayer.getCurrentTrack();
-        TrackPlayer.updateMetadataForTrack(currentTrack, {
-            title: e.title,
-            artist: e.artist
-        });
-
-        setMyArtist(e.artist);
-        setMyTitle(e.title);
-    });
-   
     useEffect(() => {
-        setUpTrackPlayer();
+        let isMounted = true;
+        setUpTrackPlayer().then(() => {
+            if(isMounted) {
+                setMyArtist("Artist");
+                setMyTitle("Title");
+                TrackPlayer.addEventListener('playback-metadata-received', async e => {
+                    const currentTrack = await TrackPlayer.getCurrentTrack();
+                    TrackPlayer.updateMetadataForTrack(currentTrack, {
+                        title: e.title,
+                        artist: e.artist
+                    });
+            
+                    setMyArtist(e.artist);
+                    setMyTitle(e.title);
+                });
+            }
+        });
         return () => {
+            isMounted = false;
             TrackPlayer.destroy();
-            setMyArtist("Artist");
-            setMyTitle("Title");
         }
     }, []);
 
