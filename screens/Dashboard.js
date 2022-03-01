@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {View, Text, SafeAreaView, Image, TextInput, TouchableOpacity, StyleSheet, StatusBar} from "react-native";
 import MusicPlayer from "../components/MusicPlayer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import HelloMessage from "../components/HelloMessage";
 
 export default function Dashboard() {
     var user;
@@ -42,10 +43,11 @@ export default function Dashboard() {
     return (
       <View style={styles.container}>
         <StatusBar barStyle='light-content' />
-        <View>
+        {/* <View>
           <Text>{email}</Text>
           <Text>{name}</Text>
-        </View>
+        </View> */}
+        <HelloMessage name={name}/>
         <MusicPlayer />
       </View>
     )

@@ -82,8 +82,8 @@ const MusicPlayer = () => {
                     <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
                         <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={75} color="#FFD369" />
                     </TouchableOpacity>
-                    <View style={{marginTop: 15}}>
-                        <Text style={styles.title}>{myTitle}</Text>
+                    <View style={{marginTop: 15, alignItems: "center"}}>
+                        <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
                         <Text style={styles.artist}>{myArtist}</Text>
                     </View>
                 </View>
@@ -106,12 +106,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     bottomContainer: {
-        borderTopColor: '#393E46',
+        borderTopColor: 'white',
         borderTopWidth: 1,
         width: width,
         alignItems: 'flex-start',
         paddingBottom: 10,
-        paddingLeft: 25
+        paddingLeft: 25,
+        backgroundColor: '#121821'
     },
     bottomControls: {
         flexDirection: 'row',
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600",
         textAlign: 'center',
-        color: '#EEEEEE'
+        color: '#EEEEEE',
     },
     artist: {
         fontSize: 16,
