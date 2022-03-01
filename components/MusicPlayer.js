@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {View, Text, SafeAreaView, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
+import {View, Text, SafeAreaView, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import TrackPlayer, {Capability, State, usePlaybackState} from "react-native-track-player";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -78,7 +78,7 @@ const MusicPlayer = () => {
             <View style={styles.mainContainer}>
             </View>
             <View style={styles.bottomContainer}>
-                 <View style= {styles.musicControls}>
+                <View style= {styles.musicControls}>
                     <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
                         <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={75} color="#FFD369" />
                     </TouchableOpacity>
@@ -86,6 +86,7 @@ const MusicPlayer = () => {
                         <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
                         <Text style={styles.artist}>{myArtist}</Text>
                     </View>
+                    <Image style={{width:75, height: 75, resizeMode:"stretch"}}  source={require('../assets/images/Ruby_On_Rails_Logo.svg.png')} />
                 </View>
             </View>   
         </SafeAreaView>
