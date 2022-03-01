@@ -1,9 +1,12 @@
+import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {View, Text, SafeAreaView, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import TrackPlayer, {Capability, State, usePlaybackState} from "react-native-track-player";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+
 const {width, height} = Dimensions.get('window');
+const baseUrl = 'https://mazefm-backend.herokuapp.com';
 
 TrackPlayer.updateOptions({
     stopWithApp: true,
@@ -42,33 +45,49 @@ const togglePlayback = async(playbackState) => {
     
 }
 
+
+
 const MusicPlayer = () => {
 
     const playbackState = usePlaybackState();
+    var myAlbumLogo = '../assets/images/Ruby_On_Rails_Logo.svg.png';
 
     const [myArtist, setMyArtist] = useState("Artist");
     const [myTitle, setMyTitle] = useState("Title");
 
+    const onTrackChanged = async (newTrack) => {
+        const currentTrack = await TrackPlayer.getCurrentTrack();
+        TrackPlayer.updateMetadataForTrack(currentTrack, {
+            title: newTrack.title,
+            artist: newTrack.artist
+        });
+        setMyArtist(newTrack.artist);
+        setMyTitle(newTrack.title);
+
+        // const albumResponse = await axios.get(`${baseUrl}/dashboard/search-album-for-track?track=${myTitle}&artist=${myArtist}`);   
+        //     if(albumResponse.status === 200) {
+        //         myAlbumLogo = albumResponse.data.url;
+        //         console.log(myAlbumLogo);
+        //     }
+        //     else {
+        //         myAlbumLogo = '../assets/images/Ruby_On_Rails_Logo.svg.png';
+        //     }
+    }
+
     useEffect(() => {
         let isMounted = true;
         setUpTrackPlayer().then(() => {
-            if(isMounted) {
-                setMyArtist("Artist");
-                setMyTitle("Title");
-                TrackPlayer.addEventListener('playback-metadata-received', async e => {
-                    const currentTrack = await TrackPlayer.getCurrentTrack();
-                    TrackPlayer.updateMetadataForTrack(currentTrack, {
-                        title: e.title,
-                        artist: e.artist
-                    });
-            
-                    setMyArtist(e.artist);
-                    setMyTitle(e.title);
-                });
+            if(!isMounted) {
+                return;
             }
+            setMyArtist("Artist");
+            setMyTitle("Title");
         });
+        TrackPlayer.addEventListener('playback-metadata-received', onTrackChanged);
+        
         return () => {
             isMounted = false;
+            // removeEventListener('playback-metadata-received',onTrackChanged);
             TrackPlayer.destroy();
         }
     }, []);
@@ -79,14 +98,14 @@ const MusicPlayer = () => {
             </View>
             <View style={styles.bottomContainer}>
                 <View style= {styles.musicControls}>
-                    <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
-                        <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={75} color="#FFD369" />
-                    </TouchableOpacity>
+                    <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo}} />
                     <View style={{marginTop: 15, alignItems: "center"}}>
                         <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
                         <Text style={styles.artist}>{myArtist}</Text>
                     </View>
-                    <Image style={{width:75, height: 75, resizeMode:"stretch"}}  source={require('../assets/images/Ruby_On_Rails_Logo.svg.png')} />
+                    <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
+                        <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={75} color="#FFD369" />
+                    </TouchableOpacity>
                 </View>
             </View>   
         </SafeAreaView>
@@ -134,7 +153,7 @@ const styles = StyleSheet.create({
     },
     musicControls: {
         flexDirection: "row", 
-        width: "60%",
+        width: "80%",
         justifyContent: 'space-between',
         marginTop: 15
     }
