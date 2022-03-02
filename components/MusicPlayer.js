@@ -50,10 +50,10 @@ const togglePlayback = async(playbackState) => {
 const MusicPlayer = () => {
 
     const playbackState = usePlaybackState();
-    var myAlbumLogo = '../assets/images/Ruby_On_Rails_Logo.svg.png';
 
     const [myArtist, setMyArtist] = useState("Artist");
     const [myTitle, setMyTitle] = useState("Title");
+    const [myAlbumLogo, setMyAlbumLogo] = useState('../assets/images/Ruby_On_Rails_Logo.svg.png');
 
     const onTrackChanged = async (newTrack) => {
         const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -63,16 +63,13 @@ const MusicPlayer = () => {
         });
         setMyArtist(newTrack.artist);
         setMyTitle(newTrack.title);
-
-        // const albumResponse = await axios.get(`${baseUrl}/dashboard/search-album-for-track?track=${myTitle}&artist=${myArtist}`);   
-        //     if(albumResponse.status === 200) {
-        //         myAlbumLogo = albumResponse.data.url;
-        //         console.log(myAlbumLogo);
-        //     }
-        //     else {
-        //         myAlbumLogo = '../assets/images/Ruby_On_Rails_Logo.svg.png';
-        //     }
     }
+
+    useEffect(() => {
+        TrackPlayer.addEventListener('playback-metadata-received', onTrackChanged);
+        return() => {
+        }
+    }, []);
 
     useEffect(() => {
         let isMounted = true;
@@ -83,14 +80,32 @@ const MusicPlayer = () => {
             setMyArtist("Artist");
             setMyTitle("Title");
         });
-        TrackPlayer.addEventListener('playback-metadata-received', onTrackChanged);
         
         return () => {
             isMounted = false;
-            // removeEventListener('playback-metadata-received',onTrackChanged);
             TrackPlayer.destroy();
         }
     }, []);
+
+    useEffect(() => {
+        let isMounted = true;
+        axios.get(`${baseUrl}/dashboard/search-album-for-track?track=${myTitle}&artist=${myArtist}`)
+        .then((response) => {
+            if(!isMounted) {
+                return;
+            }
+            if(response.status === 200) {
+                const url = response.data.url;
+                setMyAlbumLogo(url);
+            }
+        }, (err) => {
+            setMyAlbumLogo('../assets/images/Ruby_On_Rails_Logo.svg.png');
+            return;
+        })           
+        return () => {
+            isMounted = false;
+        }
+    }, [myTitle, myArtist]);
 
     return (
         <SafeAreaView style={styles.container}>
