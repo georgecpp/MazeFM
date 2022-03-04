@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {View, Text, SafeAreaView, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import TrackPlayer, {Capability, State, usePlaybackState} from "react-native-track-player";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import TextTicker from "react-native-text-ticker";
 
 
 const {width, height} = Dimensions.get('window');
@@ -30,22 +31,6 @@ const setUpTrackPlayer = async () => {
     }
 }
 
-const togglePlayback = async(playbackState) => {
-    const currentTrack = await TrackPlayer.getCurrentTrack();
-    if(playbackState === State.Playing) {
-        await TrackPlayer.stop();
-        if(currentTrack === null || currentTrack === undefined) {
-            await TrackPlayer.reset();
-            await TrackPlayer.add(trackStructure);
-        }
-    }
-    else {
-        await TrackPlayer.play();
-    }
-    
-}
-
-
 
 const MusicPlayer = () => {
 
@@ -63,6 +48,21 @@ const MusicPlayer = () => {
         });
         setMyArtist(newTrack.artist);
         setMyTitle(newTrack.title);
+    }
+
+    const togglePlayback = async(playbackState) => {
+        const currentTrack = await TrackPlayer.getCurrentTrack();
+        if(playbackState === State.Playing) {
+            await TrackPlayer.stop();
+            if(currentTrack === null || currentTrack === undefined) {
+                await TrackPlayer.reset();
+                await TrackPlayer.add(trackStructure);
+            }
+        }
+        else {
+            await TrackPlayer.play();
+        }
+        
     }
 
     useEffect(() => {
@@ -115,11 +115,13 @@ const MusicPlayer = () => {
                 <View style= {styles.musicControls}>
                     <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo}} />
                     <View style={{marginTop: 15, alignItems: "center"}}>
-                        <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
-                        <Text style={styles.artist}>{myArtist}</Text>
+                        {/* <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
+                        <Text style={styles.artist} numberOfLines={1} changeFontSizeToFit={true}>{myArtist}</Text> */}
+                        <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.title}>{myTitle}</TextTicker>
+                        <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.artist}>{myArtist}</TextTicker>
                     </View>
                     <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
-                        <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={75} color="#FFD369" />
+                        <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={64} color="#FFD369" />
                     </TouchableOpacity>
                 </View>
             </View>   
@@ -155,7 +157,7 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "600",
         textAlign: 'center',
         color: '#EEEEEE',
@@ -168,8 +170,9 @@ const styles = StyleSheet.create({
     },
     musicControls: {
         flexDirection: "row", 
-        width: "80%",
-        justifyContent: 'space-between',
+        width: "100%",
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         marginTop: 15
     }
 });
