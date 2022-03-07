@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {View, Text, SafeAreaView, Image, TextInput, TouchableOpacity, StyleSheet, StatusBar} from "react-native";
 import MusicPlayer from "../components/MusicPlayer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,30 +14,26 @@ export default function Dashboard() {
 
 
     React.useEffect(() => {
+      let isMounted = true ;
       // Fetch the token from storage then navigate to our appropriate place
       const bootstrapAsync = async () => {
-        let userToken;
         try {
-          await AsyncStorage.getItem('user', (err, value) => {
-            if(err) {
-              console.log(err);
-            }
-            else {
-              user = JSON.parse(value);
-              setEmail(user.email);
-              setId(user.id);
-              setImg(user.img);
-              setJwt(user.jwt);
-              setName(user.name);
-            }
-          });
-          
-        } catch (e) {
+          var value = await AsyncStorage.getItem('user');
+          user = JSON.parse(value);
+          setEmail(user.email);
+          setId(user.id);
+          setImg(user.img);
+          setJwt(user.jwt);
+          setName(user.name);
+        }
+        catch(e) {
           console.log(e);
         }
       };
-
-      bootstrapAsync();
+      bootstrapAsync()
+      return () => {
+        
+      }
     }, []);
 
     return (

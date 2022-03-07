@@ -1,9 +1,13 @@
+import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {View, Text, SafeAreaView, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import TrackPlayer, {Capability, State, usePlaybackState} from "react-native-track-player";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import TextTicker from "react-native-text-ticker";
+
 
 const {width, height} = Dimensions.get('window');
+const baseUrl = 'https://mazefm-backend.herokuapp.com';
 
 TrackPlayer.updateOptions({
     stopWithApp: true,
@@ -27,20 +31,6 @@ const setUpTrackPlayer = async () => {
     }
 }
 
-const togglePlayback = async(playbackState) => {
-    const currentTrack = await TrackPlayer.getCurrentTrack();
-    if(playbackState === State.Playing) {
-        await TrackPlayer.stop();
-        if(currentTrack === null || currentTrack === undefined) {
-            await TrackPlayer.reset();
-            await TrackPlayer.add(trackStructure);
-        }
-    }
-    else {
-        await TrackPlayer.play();
-    }
-    
-}
 
 const MusicPlayer = () => {
 
@@ -48,30 +38,74 @@ const MusicPlayer = () => {
 
     const [myArtist, setMyArtist] = useState("Artist");
     const [myTitle, setMyTitle] = useState("Title");
+    const [myAlbumLogo, setMyAlbumLogo] = useState('../assets/images/Ruby_On_Rails_Logo.svg.png');
+
+    const onTrackChanged = async (newTrack) => {
+        const currentTrack = await TrackPlayer.getCurrentTrack();
+        TrackPlayer.updateMetadataForTrack(currentTrack, {
+            title: newTrack.title,
+            artist: newTrack.artist
+        });
+        setMyArtist(newTrack.artist);
+        setMyTitle(newTrack.title);
+    }
+
+    const togglePlayback = async(playbackState) => {
+        const currentTrack = await TrackPlayer.getCurrentTrack();
+        if(playbackState === State.Playing) {
+            await TrackPlayer.stop();
+            if(currentTrack === null || currentTrack === undefined) {
+                await TrackPlayer.reset();
+                await TrackPlayer.add(trackStructure);
+            }
+        }
+        else {
+            await TrackPlayer.play();
+        }
+        
+    }
+
+    useEffect(() => {
+        TrackPlayer.addEventListener('playback-metadata-received', onTrackChanged);
+        return() => {
+        }
+    }, []);
 
     useEffect(() => {
         let isMounted = true;
         setUpTrackPlayer().then(() => {
-            if(isMounted) {
-                setMyArtist("Artist");
-                setMyTitle("Title");
-                TrackPlayer.addEventListener('playback-metadata-received', async e => {
-                    const currentTrack = await TrackPlayer.getCurrentTrack();
-                    TrackPlayer.updateMetadataForTrack(currentTrack, {
-                        title: e.title,
-                        artist: e.artist
-                    });
-            
-                    setMyArtist(e.artist);
-                    setMyTitle(e.title);
-                });
+            if(!isMounted) {
+                return;
             }
+            setMyArtist("Artist");
+            setMyTitle("Title");
         });
+        
         return () => {
             isMounted = false;
             TrackPlayer.destroy();
         }
     }, []);
+
+    useEffect(() => {
+        let isMounted = true;
+        axios.get(`${baseUrl}/dashboard/search-album-for-track?track=${myTitle}&artist=${myArtist}`)
+        .then((response) => {
+            if(!isMounted) {
+                return;
+            }
+            if(response.status === 200) {
+                const url = response.data.url;
+                setMyAlbumLogo(url);
+            }
+        }, (err) => {
+            setMyAlbumLogo('../assets/images/Ruby_On_Rails_Logo.svg.png');
+            return;
+        })           
+        return () => {
+            isMounted = false;
+        }
+    }, [myTitle, myArtist]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -79,14 +113,16 @@ const MusicPlayer = () => {
             </View>
             <View style={styles.bottomContainer}>
                 <View style= {styles.musicControls}>
-                    <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
-                        <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={75} color="#FFD369" />
-                    </TouchableOpacity>
+                    <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo}} />
                     <View style={{marginTop: 15, alignItems: "center"}}>
-                        <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
-                        <Text style={styles.artist}>{myArtist}</Text>
+                        {/* <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
+                        <Text style={styles.artist} numberOfLines={1} changeFontSizeToFit={true}>{myArtist}</Text> */}
+                        <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.title}>{myTitle}</TextTicker>
+                        <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.artist}>{myArtist}</TextTicker>
                     </View>
-                    <Image style={{width:75, height: 75, resizeMode:"stretch"}}  source={require('../assets/images/Ruby_On_Rails_Logo.svg.png')} />
+                    <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
+                        <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={64} color="#FFD369" />
+                    </TouchableOpacity>
                 </View>
             </View>   
         </SafeAreaView>
@@ -121,7 +157,7 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     title: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "600",
         textAlign: 'center',
         color: '#EEEEEE',
@@ -134,8 +170,9 @@ const styles = StyleSheet.create({
     },
     musicControls: {
         flexDirection: "row", 
-        width: "60%",
-        justifyContent: 'space-between',
+        width: "100%",
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         marginTop: 15
     }
 });
