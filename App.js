@@ -137,8 +137,8 @@ export default App = ({navigation}) => {
                           // user registered with facebook.
                           // received jwt in header and user id.
                           user = loginResponse.data;
-                          dispatch({ type: 'SIGN_IN', token: user.jwt });
                           await AsyncStorage.setItem('user', JSON.stringify(user));
+                          dispatch({ type: 'SIGN_IN', token: user.jwt });
                         }
                     }
                 },
@@ -160,8 +160,8 @@ export default App = ({navigation}) => {
                 });
                 if(loginResponse.status === 200 || loginResponse.status === 201) {
                     user = loginResponse.data;
-                    dispatch({ type: 'SIGN_IN', token: user.jwt });
                     await AsyncStorage.setItem('user', JSON.stringify(user));
+                    dispatch({ type: 'SIGN_IN', token: user.jwt });
                   }
               } catch (error) {
                 if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -193,8 +193,8 @@ export default App = ({navigation}) => {
               if(loginResponse.status === 200)
                 {
                   user = loginResponse.data;
-                  dispatch({ type: 'SIGN_IN', token: user.jwt });
                   await AsyncStorage.setItem('user', JSON.stringify(user));
+                  dispatch({ type: 'SIGN_IN', token: user.jwt });
                 }
               }
               catch(error){
