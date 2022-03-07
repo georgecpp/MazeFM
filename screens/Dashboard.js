@@ -4,7 +4,7 @@ import MusicPlayer from "../components/MusicPlayer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HelloMessage from "../components/HelloMessage";
 
-export default function Dashboard() {
+export default function Dashboard({navigation}) {
     var user;
     const [email, setEmail] = useState('email');
     const [id, setId] = useState('id');
@@ -44,6 +44,10 @@ export default function Dashboard() {
           <Text>{name}</Text>
         </View> */}
         <HelloMessage name={name}/>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('ProfileScreen', {email: email, name: name, img: img})}}>
+          <Text>Profile</Text>
+        </TouchableOpacity>
         <MusicPlayer />
       </View>
     )

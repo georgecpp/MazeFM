@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from './screens/Login';
 import Register from './screens/Register';
 import Dashboard from './screens/Dashboard';
+import ProfileScreen from './screens/ProfileScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { loginValidation } from "./utils/Validation";
 import { AccessToken, LoginManager } from "react-native-fbsdk-next";
@@ -123,7 +124,7 @@ export default App = ({navigation}) => {
                               console.log("Something went wrong obtaining access token");
                               return; 
                             }                       
-                        const userFb = await axios.get(`https://graph.facebook.com/${data.userID}?fields=id,name,email,picture&access_token=${data.accessToken}`);
+                        const userFb = await axios.get(`https://graph.facebook.com/${data.userID}?fields=id,name,email,picture.type(large)&access_token=${data.accessToken}`);
 
                         const {name, email, picture} = userFb.data;
                         const img = picture.data.url;
@@ -227,7 +228,8 @@ export default App = ({navigation}) => {
                     </>
                 ): (
                     <>
-                        <Stack.Screen name="Dashboard" component={Dashboard} />  
+                        <Stack.Screen name="Dashboard" component={Dashboard} />
+                        <Stack.Screen name="ProfileScreen" component={ProfileScreen} />  
                     </>
                 )}
             </Stack.Navigator>
