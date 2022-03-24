@@ -15,10 +15,10 @@ export default function HelloMessage(properties) {
 const styles = StyleSheet.create( {
     container: {
         alignSelf:"center",
-        width: '90%',
+        width: '80%',
         height: '35%',
         backgroundColor: '#121821',
-        borderRadius: 15,
+        borderRadius: 20,
         marginTop: 10,
         marginBottom: 10,
     },

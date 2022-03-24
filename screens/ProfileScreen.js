@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
-import {View, Text, SafeAreaView, Image, StyleSheet, ScrollView} from "react-native";
+import {View, Text, SafeAreaView, Image, StyleSheet, ScrollView, Dimensions} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Icon from 'react-native-vector-icons/AntDesign';
+
+const { width: WIDTH } = Dimensions.get('window')
 
 export default function ProfileScreen({route, navigation}) {
 
@@ -22,11 +25,27 @@ export default function ProfileScreen({route, navigation}) {
                 </View>
 
                 <View style={{alignSelf: 'center'}}>
-                    <View style={styles.profileImage}>
+                    <View style={styles.profileImage} >
                         <Image source={{uri: img}} style={styles.image} resizeMode="contain"></Image>
                     </View>
-                    <Text>{name}</Text>
-                    <Text>{email}</Text>
+                    <View style={styles.dataContainer}>
+                        <View style={styles.infoContainer}>
+                            <View style={styles.iconContainer}>
+                                <Icon style={styles.nameIcon} name={'user'} size={25} position="absolute"></Icon>
+                            </View>
+                            <View style={styles.textContainer}>
+                                <Text style={styles.text}>{name}</Text> 
+                            </View>
+                        </View>
+                        <View style={styles.infoContainer} marginTop={5}>
+                            <View style={styles.iconContainer}>
+                                <Icon style={styles.nameIcon} name={'mail'} size={25} position="absolute"></Icon>
+                            </View>
+                            <View style={styles.textContainer}>
+                                <Text style={styles.text}>{email}</Text> 
+                            </View>
+                        </View>
+                    </View>
                 </View>
 
             </ScrollView>
@@ -37,11 +56,13 @@ export default function ProfileScreen({route, navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'#fff',
+        backgroundColor: '#121821'
     },
     text: {
-        fontfamily:'HelveticaNeue',
-        color:'#52575D'
+        fontFamily:'HelveticaNeue',
+        fontWeight:'700',
+        color:'rgba(255, 255, 255, 0.6)',
+        fontSize: 20,
     },
     image: {
         flex: 1,
@@ -55,9 +76,46 @@ const styles = StyleSheet.create({
         marginHorizontal: 16
     },
     profileImage: {
+        alignSelf: 'center',
+        marginTop: 30,
         width: 200,
         height: 200,
         borderRadius: 100,
-        overflow: "hidden"
+        overflow: "hidden",
+        borderColor: 'rgba(255 ,255, 255, 0)',
+        borderThickness: 10
+    },
+    infoContainer: {
+        flexDirection: "row",
+        alignItems: 'center',
+    },
+    textContainer: {
+        width: undefined,
+        height: 35,
+        borderRadius:  45,
+        backgroundColor: 'black',
+        marginHorizontal: 10,
+        alignContent: "center",
+        alignItems: "center",
+        alignSelf: 'center'
+    },
+    nameIcon: {
+        color: '#FFD369', 
+        marginTop: 5,  
+    },
+    iconContainer: {
+        width: 35,
+        height: 35,
+        borderRadius: 100,
+        backgroundColor: 'black',
+        alignContent: "center",
+        alignItems: "center",
+        alignSelf: 'center',
+        marginLeft: 15,
+        
+    },
+    dataContainer: {
+        alignSelf: 'center',
+        marginTop: 60
     }
 });

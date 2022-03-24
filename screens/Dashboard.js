@@ -3,6 +3,7 @@ import {View, Text, SafeAreaView, Image, TextInput, TouchableOpacity, StyleSheet
 import MusicPlayer from "../components/MusicPlayer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HelloMessage from "../components/HelloMessage";
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 export default function Dashboard({navigation}) {
     var user;
@@ -43,11 +44,19 @@ export default function Dashboard({navigation}) {
           <Text>{email}</Text>
           <Text>{name}</Text>
         </View> */}
+        
+          
+          {/* <TouchableOpacity style = {{backgroundColor:"#222831"}} onPress={() => {
+            navigation.navigate('ProfileScreen', {email: email, name: name, img: img})}}>
+            <Icon name='user-circle' size={26} color={'white'}></Icon>
+          </TouchableOpacity> */}
+
         <HelloMessage name={name}/>
-        <TouchableOpacity onPress={() => {
-          navigation.navigate('ProfileScreen', {email: email, name: name, img: img})}}>
-          <Text>Profile</Text>
-        </TouchableOpacity>
+        <TouchableOpacity style = {{backgroundColor:"#222831"}} onPress={() => {
+            navigation.navigate('ProfileScreen', {email: email, name: name, img: img})}}>
+            <Icon name='user-circle' size={26} color={'rgba(255,255,255, 0.6)'}></Icon>
+          </TouchableOpacity>
+        
         <MusicPlayer />
       </View>
     )
