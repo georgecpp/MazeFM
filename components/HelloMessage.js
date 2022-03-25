@@ -14,20 +14,21 @@ export default function HelloMessage(properties) {
 
 const styles = StyleSheet.create( {
     container: {
-        alignSelf:"center",
-        width: '80%',
-        height: '35%',
+        alignSelf:"flex-start",
+        width: 350,
+        height: 100,
         backgroundColor: '#121821',
-        borderRadius: 20,
+        borderBottomEndRadius: 10,
+        borderTopEndRadius: 10,
         marginTop: 10,
-        marginBottom: 10,
+        // marginBottom: 10,
     },
     hiMessage : {
         fontSize: 25,
         fontWeight: 'bold',
         color: '#FFD369',
-        marginTop: 10,
-        alignSelf:"center",
+        marginTop: 15,
+        // alignSelf:"center",
     },
     mazeFmText : {
         fontSize: 20,
@@ -35,3 +36,6 @@ const styles = StyleSheet.create( {
 
     },
 })
+
+
+// 121821
