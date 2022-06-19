@@ -6,6 +6,7 @@ import HelloMessage from "../components/HelloMessage";
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ShowCard from "../components/ShowCard";
 import { ScrollView } from "react-native-gesture-handler";
+import moment from "moment";
 
 export default function Dashboard({navigation}) {
     var user;
@@ -14,6 +15,34 @@ export default function Dashboard({navigation}) {
     const [img, setImg] = useState('img');
     const [jwt, setJwt] = useState('jwt');
     const [name, setName] = useState('name');
+
+    var today = moment();
+    var tomorrow = moment().add(1, 'days');
+    var dayAfterTomorrow = moment().add(2, 'days');
+
+    const emisiuniData = [
+      {
+        id: 1,
+        title: "Emisiune 1",
+        description: "Muzica buna romaneasca",
+        timeFrom:  moment(),
+        timeTo:  moment().add(1, 'hour')
+      },
+      {
+        id: 2,
+        title: "Emisiune 2",
+        description: "Muzica buna romaneasca",
+        timeFrom:  moment().add(1, 'days'),
+        timeTo: moment().add(1, 'days').add(2, 'hour')
+      },
+      {
+        id: 3,
+        title: "Emisiune 3",
+        description: "Muzica buna romaneasca",
+        timeFrom: moment().add(2, 'days'),
+        timeTo: moment().add(2, 'days').add(3, 'hour')
+      },
+    ]
 
 
     React.useEffect(() => {
@@ -39,6 +68,13 @@ export default function Dashboard({navigation}) {
       }
     }, []);
 
+    const isToday = (someDate) => {
+      const today = new Date()
+      return someDate.getDate() == today.getDate() &&
+        someDate.getMonth() == today.getMonth() &&
+        someDate.getFullYear() == today.getFullYear()
+    }
+
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle='light-content' />
@@ -53,15 +89,13 @@ export default function Dashboard({navigation}) {
         
         <View style={{flex: 1, marginTop: 15}}>
           <ScrollView >
-            <ShowCard />
-            <ShowCard />
-            <ShowCard />
-            <ShowCard />
-            <ShowCard />
-            <ShowCard />
-            <ShowCard />
-            <ShowCard />
-            <ShowCard />
+            {emisiuniData.filter(emisiune => emisiune.timeFrom.isSame(new Date(), "day")).map((emisiune, index) => (
+              <ShowCard key={index} 
+              title={emisiune.title}
+              timeFrom={emisiune.timeFrom.calendar()}
+              timeTo={emisiune.timeTo.calendar()}
+              description={emisiune.description}/>
+            ))}
           </ScrollView>
           <MusicPlayer />
         </View>

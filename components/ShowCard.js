@@ -1,14 +1,14 @@
 import React from "react";
 import {View, Text, SafeAreaView, StyleSheet, Dimensions, TouchableOpacity, Image} from 'react-native';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
-export default function ShowCard() {
+export default function ShowCard(props) {
     return (
         <Card>
             <CardTitle 
-                title="This is a title" 
-                subtitle="This is subtitle"
+                title={props.title}
+                subtitle={props.timeFrom + " - " + props.timeTo}
             />
-            <CardContent text="Your device will reboot in few seconds once successful, be patient meanwhile" />
+            <CardContent text={props.description} />
         </Card>
     );
 };
