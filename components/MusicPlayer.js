@@ -111,7 +111,7 @@ const MusicPlayer = () => {
         <View style={styles.bottomContainer}>
             <View style= {styles.musicControls}>
                 <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo}} />
-                <View style={{marginTop: 15, alignItems: "center"}}>
+                <View style={{marginTop: 15, alignItems: "center", width: 150}}>
                     <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.title}>{myTitle}</TextTicker>
                     <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.artist}>{myArtist}</TextTicker>
                 </View>
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         borderTopColor: 'white',
         borderTopWidth: 1,
         width: width,
-        alignItems: 'flex-start',
+        alignItems: 'center',
         paddingBottom: 10,
         paddingLeft: 25,
     },
