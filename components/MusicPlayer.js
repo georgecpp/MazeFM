@@ -108,24 +108,18 @@ const MusicPlayer = () => {
     }, [myTitle, myArtist]);
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.mainContainer}>
-            </View>
-            <View style={styles.bottomContainer}>
-                <View style= {styles.musicControls}>
-                    <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo}} />
-                    <View style={{marginTop: 15, alignItems: "center"}}>
-                        {/* <Text style={styles.title} numberOfLines={1} changeFontSizeToFit={true}>{myTitle}</Text>
-                        <Text style={styles.artist} numberOfLines={1} changeFontSizeToFit={true}>{myArtist}</Text> */}
-                        <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.title}>{myTitle}</TextTicker>
-                        <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.artist}>{myArtist}</TextTicker>
-                    </View>
-                    <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
-                        <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={64} color="#FFD369" />
-                    </TouchableOpacity>
+        <View style={styles.bottomContainer}>
+            <View style= {styles.musicControls}>
+                <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo}} />
+                <View style={{marginTop: 15, alignItems: "center"}}>
+                    <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.title}>{myTitle}</TextTicker>
+                    <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.artist}>{myArtist}</TextTicker>
                 </View>
-            </View>   
-        </SafeAreaView>
+                <TouchableOpacity onPress={() => togglePlayback(playbackState)}>
+                    <Ionicons name={playbackState === State.Playing ?  "ios-pause-circle" : "ios-play-circle"} size={64} color="#FFD369" />
+                </TouchableOpacity>
+            </View>
+        </View>   
     );
 };
 
@@ -133,23 +127,17 @@ export default MusicPlayer;
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#222831'
-    },
-    mainContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     bottomContainer: {
+        position: 'relative',
+        bottom: 0,
+        elevation: 0,
+        backgroundColor: '#121821',
         borderTopColor: 'white',
         borderTopWidth: 1,
         width: width,
         alignItems: 'flex-start',
         paddingBottom: 10,
         paddingLeft: 25,
-        backgroundColor: '#121821'
     },
     bottomControls: {
         flexDirection: 'row',
