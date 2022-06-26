@@ -8,6 +8,8 @@ import ShowCard from "../components/ShowCard";
 import { ScrollView } from "react-native-gesture-handler";
 import moment from "moment";
 import axios from "axios";
+import { Avatar, Accessory } from 'react-native-elements';
+
 
 export default function Dashboard({navigation}) {
     var user;
@@ -71,7 +73,14 @@ export default function Dashboard({navigation}) {
           <HelloMessage name={name}/>
           <TouchableOpacity style={{paddingLeft: 13}} onPress={() => {
                 navigation.navigate('ProfileScreen', {email: email, name: name, img: img})}}>
-                <Icon name='user-circle' size={35} color={'rgba(255,255,255, 0.6)'}></Icon>
+                <Avatar
+                  size="small"
+                  rounded
+                  source={{
+                    uri: img
+                  }}>
+                  <Accessory />
+                </Avatar>
           </TouchableOpacity>
         </View>
         

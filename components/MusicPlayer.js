@@ -38,7 +38,7 @@ const MusicPlayer = () => {
 
     const [myArtist, setMyArtist] = useState("Artist");
     const [myTitle, setMyTitle] = useState("Title");
-    const [myAlbumLogo, setMyAlbumLogo] = useState('../assets/images/Ruby_On_Rails_Logo.svg.png');
+    const [myAlbumLogo, setMyAlbumLogo] = useState(null);
 
     const onTrackChanged = async (newTrack) => {
         const currentTrack = await TrackPlayer.getCurrentTrack();
@@ -99,7 +99,7 @@ const MusicPlayer = () => {
                 setMyAlbumLogo(url);
             }
         }, (err) => {
-            setMyAlbumLogo('../assets/images/Ruby_On_Rails_Logo.svg.png');
+            setMyAlbumLogo(null);
             return;
         })           
         return () => {
@@ -110,7 +110,7 @@ const MusicPlayer = () => {
     return (
         <View style={styles.bottomContainer}>
             <View style= {styles.musicControls}>
-                <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo}} />
+                <Image style={{width:64, height: 64, resizeMode:"contain"}}  source={{uri: myAlbumLogo != null ? myAlbumLogo : 'https://cdn-icons-png.flaticon.com/512/6119/6119310.png'}} />
                 <View style={{marginTop: 15, alignItems: "center", width: 150}}>
                     <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.title}>{myTitle}</TextTicker>
                     <TextTicker shouldAnimateTreshold={10} duration={3000} marqueeOnMount={true} loop marqueeDelay={1000} style={styles.artist}>{myArtist}</TextTicker>
