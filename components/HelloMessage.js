@@ -15,7 +15,7 @@ export default function HelloMessage(properties) {
 const styles = StyleSheet.create( {
     container: {
         alignSelf:"flex-start",
-        width: 350,
+        width: 320,
         height: 100,
         backgroundColor: '#121821',
         borderBottomEndRadius: 10,
