@@ -203,7 +203,10 @@ export default App = ({navigation}) => {
               }
           }
         },
-        signOut: () => dispatch({ type: 'SIGN_OUT' }),
+        signOut: () => {
+          AsyncStorage.clear();
+          dispatch({ type: 'SIGN_OUT' })
+        },
         signUp: async authData => {
           // In a production app, we need to send user data to server and get a token
           // We will also need to handle errors if sign up failed

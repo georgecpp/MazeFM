@@ -5,10 +5,14 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const { width: WIDTH } = Dimensions.get('window')
+import { AuthContext } from "../App";
+
+
 
 export default function ProfileScreen({route, navigation}) {
 
     const {email, name, img} = route.params;
+    const {signOut} = React.useContext(AuthContext);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -21,9 +25,7 @@ export default function ProfileScreen({route, navigation}) {
                     }} >
                         <Ionicons name={"arrow-back"} size={24} color="#52575D" />
                     </TouchableOpacity>
-                    <Ionicons name={"md-menu"} size={24} color="#52575D" />
                 </View>
-
                 <View style={{alignSelf: 'center'}}>
                     <View style={styles.profileImage} >
                         <Image source={{uri: img}} style={styles.image} resizeMode="contain"></Image>
@@ -47,7 +49,24 @@ export default function ProfileScreen({route, navigation}) {
                         </View>
                     </View>
                 </View>
-
+                <TouchableOpacity style={{width: WIDTH - 55,
+                                            height: 45,
+                                            borderRadius:  45,
+                                            backgroundColor: '#e64539',
+                                            justifyContent: 'center',
+                                            marginTop: 25,
+                                            alignSelf: 'center'
+                                        }}
+                            onPress={() => {
+                        signOut();
+                    }}>
+                    <View>
+                        <Text style={{color: 'rgba(255, 255, 255, 0.7)',
+                                    fontSize: 16,
+                                    textAlign: 'center'}}>LOG OUT NOW !</Text>
+                        {/* <Icon style={styles.nameIcon} name={'logout'} size={25}></Icon> */}
+                    </View>
+                </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     );
