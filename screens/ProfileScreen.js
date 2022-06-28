@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import {View, Text, SafeAreaView, Image, StyleSheet, ScrollView, Dimensions} from "react-native";
+import {View, Text, SafeAreaView, Image, StyleSheet, ScrollView, Dimensions, TextInput} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const { width: WIDTH } = Dimensions.get('window')
 import { AuthContext } from "../App";
@@ -33,7 +33,7 @@ export default function ProfileScreen({route, navigation}) {
                     <View style={styles.dataContainer}>
                         <View style={styles.infoContainer}>
                             <View style={styles.iconContainer}>
-                                <Icon style={styles.nameIcon} name={'user'} size={25} position="absolute"></Icon>
+                                <Icon style={styles.nameIcon} name={'person'} size={25} position="absolute"></Icon>
                             </View>
                             <View style={styles.textContainer}>
                                 <Text style={styles.text}>{name}</Text> 
@@ -49,22 +49,16 @@ export default function ProfileScreen({route, navigation}) {
                         </View>
                     </View>
                 </View>
-                <TouchableOpacity style={{width: WIDTH - 55,
-                                            height: 45,
-                                            borderRadius:  45,
-                                            backgroundColor: '#e64539',
-                                            justifyContent: 'center',
-                                            marginTop: 25,
-                                            alignSelf: 'center'
-                                        }}
+
+                <TouchableOpacity style={styles.logoutButton}
                             onPress={() => {
                         signOut();
                     }}>
-                    <View>
-                        <Text style={{color: 'rgba(255, 255, 255, 0.7)',
-                                    fontSize: 16,
-                                    textAlign: 'center'}}>LOG OUT NOW !</Text>
-                        {/* <Icon style={styles.nameIcon} name={'logout'} size={25}></Icon> */}
+                    <View style={styles.textContainer}>
+                        <Text style={styles.text}>LOG OUT NOW!</Text> 
+                    </View>
+                    <View style={styles.iconContainer}>
+                        <Icon style={{color: 'white'}} name={'exit'} size={28} position="absolute"></Icon>
                     </View>
                 </TouchableOpacity>
             </ScrollView>
@@ -108,11 +102,21 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: 'center',
     },
+    logoutButton: {
+        width: 250,
+        height: 45,
+        borderRadius:  15,
+        backgroundColor: '#e64539',
+        justifyContent: 'center',
+        marginTop: 30,
+        alignSelf: 'center',
+        flexDirection: 'row'
+    },
     textContainer: {
         width: undefined,
         height: 35,
         borderRadius:  45,
-        backgroundColor: 'black',
+        backgroundColor: 'transparent',
         marginHorizontal: 10,
         alignContent: "center",
         alignItems: "center",
@@ -126,15 +130,21 @@ const styles = StyleSheet.create({
         width: 35,
         height: 35,
         borderRadius: 100,
-        backgroundColor: 'black',
+        backgroundColor: 'transparent',
         alignContent: "center",
         alignItems: "center",
-        alignSelf: 'center',
-        marginLeft: 15,
-        
+        alignSelf: 'center',        
     },
     dataContainer: {
         alignSelf: 'center',
         marginTop: 60
-    }
+    },
+    inputContainer: {
+        marginTop: 10,
+    },
+    inputIcon:{
+        position: 'absolute',
+        top: 8,
+        left: 37
+    },
 });
