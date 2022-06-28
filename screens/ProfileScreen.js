@@ -120,7 +120,8 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         alignContent: "center",
         alignItems: "center",
-        alignSelf: 'center'
+        alignSelf: 'center',
+        paddingTop: 5
     },
     nameIcon: {
         color: '#FFD369', 
@@ -133,7 +134,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         alignContent: "center",
         alignItems: "center",
-        alignSelf: 'center',        
+        alignSelf: 'center',  
+        paddingTop: 3      
     },
     dataContainer: {
         alignSelf: 'center',
