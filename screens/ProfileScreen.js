@@ -55,7 +55,10 @@ export default function ProfileScreen({route, navigation}) {
                         signOut();
                     }}>
                     <View style={styles.textContainer}>
-                        <Text style={styles.text}>LOG OUT NOW!</Text> 
+                        <Text style={{fontFamily:'HelveticaNeue',
+                                      fontWeight:'700',
+                                      color:'white',
+                                      fontSize: 20,}}>LOG OUT NOW!</Text> 
                     </View>
                     <View style={styles.iconContainer}>
                         <Icon style={{color: 'white'}} name={'exit'} size={28} position="absolute"></Icon>

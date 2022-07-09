@@ -91,7 +91,8 @@ export default function Dashboard({navigation}) {
               title={show.title}
               timeFrom={moment.utc(show.timeFrom).calendar()}
               timeTo={moment.utc(show.timeTo).calendar()}
-              description={show.description}/>
+              description={show.description}
+              img={show.img}/>
             ))}
           </ScrollView>
           <MusicPlayer />

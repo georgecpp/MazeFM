@@ -3,12 +3,9 @@ import {View, Text, SafeAreaView, StyleSheet, Dimensions, TouchableOpacity, Imag
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 export default function ShowCard(props) {
     return (
-        <Card>
-            <CardTitle 
-                title={props.title}
-                subtitle={props.timeFrom + " - " + props.timeTo}
-            />
-            <CardContent text={props.description} />
+        <Card mediaSource={{uri: props.img}}>
+            <CardTitle title={props.title} subtitle={"⌚ " + props.timeFrom + " - " + props.timeTo} subtitleStyle={{fontSize: 15}} />
+            <CardContent text={"🗣️ " + props.description} textStyle={{ fontSize: 15}} />
         </Card>
     );
 };
@@ -19,3 +16,7 @@ const styles = StyleSheet.create({
     //   backgroundColor: '#222831'
     },
 });
+
+//titleStyle={{ fontSize: 15}}
+//subtitleStyle={{fontSize: 15}}
+//textStyle={{ fontSize: 15}}
